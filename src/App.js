@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import storage from './firebase';
 function App() {
 const [image , setImage] = useState('');
+const [getOne , setGetOne] = useState('');
 const [files, setFiles] = useState();
 
 const upload = ()=>{
@@ -14,6 +15,7 @@ const upload = ()=>{
 
 useEffect(() => {
   imageEffect();
+  getOneImageEffect();
 }, []);
 
 function imageEffect(){
@@ -33,6 +35,12 @@ function imageEffect(){
   loadImages();
 }
 
+  const getOneImageEffect = async () => {
+    let result = await storage.ref().child("images/1648143560.4_ben.badr.goo@gmail.com.gif").getDownloadURL();
+    console.log(result);
+    setGetOne(result);
+  };
+
 
   
   return (
@@ -42,10 +50,13 @@ function imageEffect(){
       <button onClick={upload}>Upload</button>
       </center>
       <div>
+      <p>get all</p>
         {files && files.map((file) => (
           <img src={file} alt="" width="100px"/>
-        ))}
+          ))}
       </div>
+      <p>get one</p>
+          <img src={getOne} alt="" width="300px"/>
     </div>
   );
 }
